@@ -16,7 +16,7 @@ package something
 import (
 ...
 	"cloud.google.com/go/logging"
-	flogger "github.com/maclir/function-logger
+	flogger "github.com/maclir/function-logger"
 )
 
 // reused between function invocations.
@@ -24,7 +24,7 @@ var logger *logging.Logger
 
 func init() {
 	var err error
-	log, err = flogger.New()
+	logger, err = flogger.New()
 	if err != nil {
 		panic(err)
 	}
