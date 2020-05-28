@@ -20,7 +20,7 @@ import (
 )
 
 // reused between function invocations.
-var logger *logging.Logger
+var logger *flogger.Logger
 
 func init() {
 	var err error
