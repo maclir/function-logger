@@ -11,9 +11,13 @@ import (
 	"google.golang.org/genproto/googleapis/api/monitoredres"
 )
 
+type Logger struct {
+	cLogger *logging.Logger
+}
+
 // New creates wraps a new instance of logging.Logger with
 // function attributes.
-func New() (*logging.Logger, error) {
+func New() (*Logger, error) {
 	projectID := os.Getenv("GCP_PROJECT")
 	if projectID == "" {
 		return nil, fmt.Errorf("GCP_PROJECT environment variable unset or missing")
@@ -51,7 +55,21 @@ func New() (*logging.Logger, error) {
 	}
 
 	commonResource := logging.CommonResource(&monitoredResource)
-	logger := client.Logger(functionName, commonResource)
+	logger := Logger{client.Logger(functionName, commonResource)}
 
-	return logger, nil
+	return &logger, nil
+}
+
+// Log is a wrapper for logging.Log which takes Severity and payload
+// to pass on.
+func (l *Logger) Log(s logging.Severity, payload interface{}) {
+	l.cLogger.Log(logging.Entry{
+		Payload:  payload,
+		Severity: s,
+	})
+}
+
+// Flush is a wrapper for logging.Flush.
+func (l *Logger) Flush() {
+	l.cLogger.Flush()
 }

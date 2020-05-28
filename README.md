@@ -35,10 +35,7 @@ func Something(w http.ResponseWriter, r *http.Request) {
 
 	...
 
-	logger.Log(logging.Entry{
-		Payload:  "This is a log",
-		Severity: logging.Info,
-	})
+	logger.Log(logging.Info, "This is a log")
 
 	...
 }
